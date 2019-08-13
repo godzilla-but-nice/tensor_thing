@@ -9,6 +9,7 @@ public:
     Vector(); // default constructor
     Vector(int); // constructor for set shape
     Vector(int, const double*); // constructor for pointer to array and shape
+    ~Vector(); // handle leaky memory
     void print() const;
     Tensor* dot(const Tensor*) const;
 private:

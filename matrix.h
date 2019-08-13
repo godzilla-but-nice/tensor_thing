@@ -9,6 +9,7 @@ public:
     Matrix();
     Matrix(int, int);
     Matrix(int, int, double**);
+    ~Matrix(); // handle leaky memory
     void print() const;
 private:
     double ** data;

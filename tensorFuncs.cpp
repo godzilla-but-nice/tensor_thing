@@ -14,6 +14,10 @@ const int* Tensor::getShapePtr()
 {
     return shape;
 }
+Tensor::~Tensor()
+{
+    delete [] shape;
+}
 
 // ----------------
 // |    Scaler    |
@@ -38,7 +42,7 @@ Scalar::Scalar(double d)
 
 void Scalar::print() const
 {
-    std::cout << std::setprecision(2) << "[ " << *data << ", ]" << std::endl;
+    std::cout << std::setprecision(2) << "[ " << data << ", ]" << std::endl;
     std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
     std::cout << "Type: Scalar" << std::endl;
 }
@@ -49,8 +53,13 @@ void Scalar::print() const
 Vector::Vector()
 {
     shape = new int[2];
+    shape[0] = 2;
     shape[1] = 1;
-    data = NULL;
+    data = new double[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
+    {
+        data[i] = 0.0;
+    }
 }
 
 Vector::Vector(int length) 
@@ -59,6 +68,10 @@ Vector::Vector(int length)
     shape[0] = length;
     shape[1] = 1;
     data = new double[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
+    {
+        data[i] = 0.0;
+    }
 }
 
 Vector::Vector(int length, const double *arr)
@@ -74,6 +87,12 @@ Vector::Vector(int length, const double *arr)
         data[i] = arr[i];
     }
 }
+
+Vector::~Vector()
+{
+    delete [] data;
+}
+
 void Vector::print() const
 {
     std::cout << std::setprecision(2) << "[ ";
@@ -82,7 +101,7 @@ void Vector::print() const
     {
         std::cout << data[i] << ", ";
     }
-    std::cout << " ]" << std::endl;
+    std::cout << "]" << std::endl;
     
     std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl; 
     std::cout << "Type: Vector" << std::endl;
@@ -96,7 +115,15 @@ Matrix::Matrix()
     shape[0] = 1;
     shape[1] = 1;
 
-    data = NULL;
+    data = new double *[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
+    {
+        data[i] = new double[shape[1]];
+        for (int j = 0; j < shape[1]; j++)
+        {
+            data[i][j] = 0;
+        }
+    }
 }
 
 Matrix::Matrix(int rows, int cols)
@@ -105,26 +132,39 @@ Matrix::Matrix(int rows, int cols)
     shape[0] = rows;
     shape[1] = cols;
 
-    data = new double*[rows];
-    for (int i = 0; i < rows; i++)
+    data = new double*[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
     {
-        data[i] = new double[cols];
+        data[i] = new double[shape[1]];
+        for (int j = 0; j < shape[1]; j++)
+        {
+            data[i][j] = 0;
+        }
     }
 }
 
-Matrix::Matrix(int rows, int cols, const double **inMatrix)
+Matrix::Matrix(int rows, int cols, double **inMatrix)
 {
     shape = new int[2];
     shape[0] = rows;
     shape[1] = cols;
 
-    data = new double *[rows];
-    for (int i = 0; i < rows; i++)
+    data = new double *[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
     {
-        data[i] = new double[cols];
+        data[i] = new double[shape[1]];
     }
 
-    std::memcpy(data, inMatrix, sizeof(data));
+    std::memcpy(data, inMatrix, sizeof(*data));
+}
+
+Matrix::~Matrix()
+{
+    for (int i = 0; i < shape[0]; i++)
+    {
+        delete [] data[i];
+    }
+    delete [] data;
 }
 
 void Matrix::print() const
