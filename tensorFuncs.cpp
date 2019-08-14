@@ -88,6 +88,20 @@ Vector::Vector(int length, const double *arr)
     }
 }
 
+Vector::Vector(const Vector &V)
+{
+    shape = new int[2];
+
+    shape[0] = V.shape[0];
+    shape[1] = V.shape[1];
+
+    data = new double[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
+    {
+        data[i] = V.data[i];
+    }
+}
+
 Vector::~Vector()
 {
     delete [] data;
@@ -156,6 +170,20 @@ Matrix::Matrix(int rows, int cols, double **inMatrix)
     }
 
     std::memcpy(data, inMatrix, sizeof(*data));
+}
+
+Matrix::Matrix(const Matrix &M)
+{
+    shape = new int[2];
+    shape[0] = M.shape[0];
+    shape[1] = M.shape[1];
+
+    data = new double*[shape[0]];
+    for(int i = 0; i < shape[0]; i++)
+    {
+        data[i] = new double[shape[1]];
+    }
+    std::memcpy(data, M.data, sizeof(*data));
 }
 
 Matrix::~Matrix()

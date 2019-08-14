@@ -6,10 +6,15 @@
 class Matrix : public Tensor
 {
 public:
-    Matrix();
-    Matrix(int, int);
-    Matrix(int, int, double**);
+    // CONSTRUCTORS
+    Matrix(); // default
+    Matrix(int, int); // shape only
+    Matrix(int, int, double**); // shape plus data
+    Matrix(const Matrix&); // copy
+    // DESTRUCTOR
     ~Matrix(); // handle leaky memory
+    // OPERATOR
+    Matrix& operator=(const Matrix&);
     void print() const;
 private:
     double ** data;
