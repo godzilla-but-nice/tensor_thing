@@ -107,6 +107,28 @@ Vector::~Vector()
     delete [] data;
 }
 
+Vector& Vector::operator=(const Vector &V)
+{
+    if (this == &V)
+    {
+        return *this;
+    }
+    delete [] shape;
+    shape = new int[2];
+
+    shape[0] = V.shape[0];
+    shape[1] = V.shape[1];
+
+    delete [] data;
+    data = new double[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
+    {
+        data[i] = V.data[i];
+    }
+
+    return *this;
+}
+
 void Vector::print() const
 {
     std::cout << std::setprecision(2) << "[ ";
@@ -193,6 +215,26 @@ Matrix::~Matrix()
         delete [] data[i];
     }
     delete [] data;
+}
+
+Matrix& Matrix::operator=(const Matrix  &M)
+{
+    if (this == &M)
+    {
+        return *this;
+    }
+    delete [] shape;
+    shape = new int[2];
+    shape[0] = M.shape[0];
+    shape[1] = M.shape[1];
+
+    delete [] data;
+    data = new double *[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
+    {
+        data[i] = new double[shape[1]];
+    }
+    std::memcpy(data, M.data, sizeof(*data));
 }
 
 void Matrix::print() const
