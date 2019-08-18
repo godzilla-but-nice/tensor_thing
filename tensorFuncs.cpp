@@ -10,13 +10,13 @@
 #include "matrix.h"
 #endif
 
-const int* Tensor::getShapePtr()
+const int *Tensor::getShapePtr()
 {
     return shape;
 }
 Tensor::~Tensor()
 {
-    delete [] shape;
+    delete[] shape;
 }
 
 // ----------------
@@ -40,11 +40,11 @@ Scalar::Scalar(double d)
     data = d;
 }
 
-void Scalar::print() const
+void Scalar::print(std::ostream &os) const
 {
-    std::cout << std::setprecision(2) << "[ " << data << ", ]" << std::endl;
-    std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
-    std::cout << "Type: Scalar" << std::endl;
+    os << std::setprecision(2) << "[ " << data << ", ]" << std::endl;
+    os << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
+    os << "Type: Scalar" << std::endl;
 }
 
 // ----------------
@@ -62,7 +62,7 @@ Vector::Vector()
     }
 }
 
-Vector::Vector(int length) 
+Vector::Vector(int length)
 {
     shape = new int[2];
     shape[0] = length;
@@ -77,10 +77,10 @@ Vector::Vector(int length)
 Vector::Vector(int length, const double *arr)
 {
     shape = new int[2];
-    
+
     shape[0] = length;
     shape[1] = 1;
-    
+
     data = new double[shape[0]];
     for (int i = 0; i < shape[0]; i++)
     {
@@ -104,22 +104,22 @@ Vector::Vector(const Vector &V)
 
 Vector::~Vector()
 {
-    delete [] data;
+    delete[] data;
 }
 
-Vector& Vector::operator=(const Vector &V)
+Vector &Vector::operator=(const Vector &V)
 {
     if (this == &V)
     {
         return *this;
     }
-    delete [] shape;
+    delete[] shape;
     shape = new int[2];
 
     shape[0] = V.shape[0];
     shape[1] = V.shape[1];
 
-    delete [] data;
+    delete[] data;
     data = new double[shape[0]];
     for (int i = 0; i < shape[0]; i++)
     {
@@ -129,18 +129,18 @@ Vector& Vector::operator=(const Vector &V)
     return *this;
 }
 
-void Vector::print() const
+void Vector::print(std::ostream &os) const
 {
-    std::cout << std::setprecision(2) << "[ ";
+    os << std::setprecision(2) << "[ ";
 
-    for(int i = 0; i < shape[0]; i++)
+    for (int i = 0; i < shape[0]; i++)
     {
-        std::cout << data[i] << ", ";
+        os << data[i] << ", ";
     }
-    std::cout << "]" << std::endl;
-    
-    std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl; 
-    std::cout << "Type: Vector" << std::endl;
+    os << "]" << std::endl;
+
+    os << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
+    os << "Type: Vector" << std::endl;
 }
 // ----------------
 // |    Matrix    |
@@ -168,7 +168,7 @@ Matrix::Matrix(int rows, int cols)
     shape[0] = rows;
     shape[1] = cols;
 
-    data = new double*[shape[0]];
+    data = new double *[shape[0]];
     for (int i = 0; i < shape[0]; i++)
     {
         data[i] = new double[shape[1]];
@@ -200,8 +200,8 @@ Matrix::Matrix(const Matrix &M)
     shape[0] = M.shape[0];
     shape[1] = M.shape[1];
 
-    data = new double*[shape[0]];
-    for(int i = 0; i < shape[0]; i++)
+    data = new double *[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
     {
         data[i] = new double[shape[1]];
     }
@@ -212,23 +212,23 @@ Matrix::~Matrix()
 {
     for (int i = 0; i < shape[0]; i++)
     {
-        delete [] data[i];
+        delete[] data[i];
     }
-    delete [] data;
+    delete[] data;
 }
 
-Matrix& Matrix::operator=(const Matrix  &M)
+Matrix &Matrix::operator=(const Matrix &M)
 {
     if (this == &M)
     {
         return *this;
     }
-    delete [] shape;
+    delete[] shape;
     shape = new int[2];
     shape[0] = M.shape[0];
     shape[1] = M.shape[1];
 
-    delete [] data;
+    delete[] data;
     data = new double *[shape[0]];
     for (int i = 0; i < shape[0]; i++)
     {
@@ -237,20 +237,20 @@ Matrix& Matrix::operator=(const Matrix  &M)
     std::memcpy(data, M.data, sizeof(*data));
 }
 
-void Matrix::print() const
+void Matrix::print(std::ostream &os) const
 {
-    std::cout << std::setprecision(2);
+    os << std::setprecision(2);
 
     for (int i = 0; i < shape[0]; i++)
     {
-        std::cout << "[ ";
+        os << "[ ";
         for (int j = 0; j < shape[1]; j++)
         {
-            std::cout << data[i][j] << ", ";
+            os << data[i][j] << ", ";
         }
-        std::cout << " ]" << std::endl;
+        os << " ]" << std::endl;
     }
 
-    std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
-    std::cout << "Type: Matrix" << std::endl;
+    os << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
+    os << "Type: Matrix" << std::endl;
 }
