@@ -55,7 +55,8 @@ Vector::Vector()
     shape = new int[2];
     shape[0] = 2;
     shape[1] = 1;
-    data = new double[shape[0]];
+
+    data = allocate();
     for (int i = 0; i < shape[0]; i++)
     {
         data[i] = 0.0;
@@ -67,7 +68,8 @@ Vector::Vector(int length)
     shape = new int[2];
     shape[0] = length;
     shape[1] = 1;
-    data = new double[shape[0]];
+
+    data = allocate();
     for (int i = 0; i < shape[0]; i++)
     {
         data[i] = 0.0;
@@ -81,11 +83,8 @@ Vector::Vector(int length, const double *arr)
     shape[0] = length;
     shape[1] = 1;
     
-    data = new double[shape[0]];
-    for (int i = 0; i < shape[0]; i++)
-    {
-        data[i] = arr[i];
-    }
+    data = allocate();
+    deep_copy(arr);
 }
 
 Vector::Vector(const Vector &V)
@@ -95,11 +94,8 @@ Vector::Vector(const Vector &V)
     shape[0] = V.shape[0];
     shape[1] = V.shape[1];
 
-    data = new double[shape[0]];
-    for (int i = 0; i < shape[0]; i++)
-    {
-        data[i] = V.data[i];
-    }
+    data = allocate();
+    deep_copy(V.data);
 }
 
 Vector::~Vector()
@@ -120,11 +116,8 @@ Vector& Vector::operator=(const Vector &V)
     shape[1] = V.shape[1];
 
     delete [] data;
-    data = new double[shape[0]];
-    for (int i = 0; i < shape[0]; i++)
-    {
-        data[i] = V.data[i];
-    }
+    data = allocate();
+    deep_copy(V.data);
 
     return *this;
 }
@@ -142,6 +135,27 @@ void Vector::print() const
     std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl; 
     std::cout << "Type: Vector" << std::endl;
 }
+
+void Vector::print_addresses()
+{
+    std::cout << "Addresses" << std::endl;
+    std::cout << "Shape: " << shape << std::endl;
+    std::cout << "Data: " << data << std::endl;
+}
+
+double * Vector::allocate()
+{
+    double * d_array = new double[shape[0]];
+    return d_array;
+}
+
+void Vector::deep_copy(const double *arr)
+{
+    for (int i = 0; i < shape[0]; i++)
+    {
+        data[i] = arr[i];
+    }
+}
 // ----------------
 // |    Matrix    |
 // ----------------
@@ -151,10 +165,9 @@ Matrix::Matrix()
     shape[0] = 1;
     shape[1] = 1;
 
-    data = new double *[shape[0]];
+    data = allocate();
     for (int i = 0; i < shape[0]; i++)
     {
-        data[i] = new double[shape[1]];
         for (int j = 0; j < shape[1]; j++)
         {
             data[i][j] = 0;
@@ -168,10 +181,9 @@ Matrix::Matrix(int rows, int cols)
     shape[0] = rows;
     shape[1] = cols;
 
-    data = new double*[shape[0]];
+    data = allocate();
     for (int i = 0; i < shape[0]; i++)
     {
-        data[i] = new double[shape[1]];
         for (int j = 0; j < shape[1]; j++)
         {
             data[i][j] = 0;
@@ -185,13 +197,8 @@ Matrix::Matrix(int rows, int cols, double **inMatrix)
     shape[0] = rows;
     shape[1] = cols;
 
-    data = new double *[shape[0]];
-    for (int i = 0; i < shape[0]; i++)
-    {
-        data[i] = new double[shape[1]];
-    }
-
-    std::memcpy(data, inMatrix, sizeof(*data));
+    data = allocate();
+    deep_copy(inMatrix);
 }
 
 Matrix::Matrix(const Matrix &M)
@@ -200,12 +207,8 @@ Matrix::Matrix(const Matrix &M)
     shape[0] = M.shape[0];
     shape[1] = M.shape[1];
 
-    data = new double*[shape[0]];
-    for(int i = 0; i < shape[0]; i++)
-    {
-        data[i] = new double[shape[1]];
-    }
-    std::memcpy(data, M.data, sizeof(*data));
+    data = allocate();
+    deep_copy(M.data);
 }
 
 Matrix::~Matrix()
@@ -229,12 +232,9 @@ Matrix& Matrix::operator=(const Matrix  &M)
     shape[1] = M.shape[1];
 
     delete [] data;
-    data = new double *[shape[0]];
-    for (int i = 0; i < shape[0]; i++)
-    {
-        data[i] = new double[shape[1]];
-    }
-    std::memcpy(data, M.data, sizeof(*data));
+    data = allocate();
+    deep_copy(M.data);
+    return *this;
 }
 
 void Matrix::print() const
@@ -253,4 +253,32 @@ void Matrix::print() const
 
     std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
     std::cout << "Type: Matrix" << std::endl;
+}
+
+void Matrix::print_addresses()
+{
+    std::cout << "Addresses" << std::endl;
+    std::cout << "Shape: " << shape << std::endl;
+    std::cout << "Data: " << data << std::endl;
+}
+
+double ** Matrix::allocate()
+{
+    double ** d_array = new double*[shape[0]];
+    for (int i = 0; i < shape[0]; i++)
+    {
+        d_array[i] = new double[shape[1]];
+    }
+    return d_array;
+}
+
+void Matrix::deep_copy(double **arr)
+{
+    for (int i = 0; i < shape[0]; i++)
+    {
+        for (int j = 0; j < shape[1]; j++)
+        {
+            data[i][j] = arr[i][j];
+        }
+    }
 }

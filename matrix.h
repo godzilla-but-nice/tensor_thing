@@ -16,6 +16,10 @@ public:
     // OPERATOR
     Matrix& operator=(const Matrix&);
     void print() const;
+    // testing
+    void print_addresses(); // print pointer adresses
 private:
+    double ** allocate(); // allocate memory for the 2d array
+    void deep_copy(double**); // copy data from pointer to 2d array
     double ** data;
 };

@@ -17,6 +17,10 @@ public:
     Vector& operator=(const Vector&);
     void print() const;
     Tensor* dot(const Tensor*) const;
+    // testing
+    void print_addresses(); // print pointer addresses
 private:
+    double * allocate(); // allocate memory for vector
+    void deep_copy(const double*); // fill values from pointer to 1d array
     double * data;
 };
