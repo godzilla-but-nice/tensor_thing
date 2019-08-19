@@ -10,13 +10,13 @@
 #include "matrix.h"
 #endif
 
-const int* Tensor::getShapePtr()
+const int *Tensor::getShapePtr()
 {
     return shape;
 }
 Tensor::~Tensor()
 {
-    delete [] shape;
+    delete[] shape;
 }
 
 // ----------------
@@ -40,11 +40,11 @@ Scalar::Scalar(double d)
     data = d;
 }
 
-void Scalar::print() const
+void Scalar::print(std::ostream &os) const
 {
-    std::cout << std::setprecision(2) << "[ " << data << ", ]" << std::endl;
-    std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
-    std::cout << "Type: Scalar" << std::endl;
+    os << std::setprecision(2) << "[ " << data << ", ]" << std::endl;
+    os << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
+    os << "Type: Scalar" << std::endl;
 }
 
 // ----------------
@@ -63,7 +63,7 @@ Vector::Vector()
     }
 }
 
-Vector::Vector(int length) 
+Vector::Vector(int length)
 {
     shape = new int[2];
     shape[0] = length;
@@ -79,7 +79,7 @@ Vector::Vector(int length)
 Vector::Vector(int length, const double *arr)
 {
     shape = new int[2];
-    
+
     shape[0] = length;
     shape[1] = 1;
     
@@ -100,16 +100,16 @@ Vector::Vector(const Vector &V)
 
 Vector::~Vector()
 {
-    delete [] data;
+    delete[] data;
 }
 
-Vector& Vector::operator=(const Vector &V)
+Vector &Vector::operator=(const Vector &V)
 {
     if (this == &V)
     {
         return *this;
     }
-    delete [] shape;
+    delete[] shape;
     shape = new int[2];
 
     shape[0] = V.shape[0];
@@ -122,18 +122,18 @@ Vector& Vector::operator=(const Vector &V)
     return *this;
 }
 
-void Vector::print() const
+void Vector::print(std::ostream &os) const
 {
-    std::cout << std::setprecision(2) << "[ ";
+    os << std::setprecision(2) << "[ ";
 
-    for(int i = 0; i < shape[0]; i++)
+    for (int i = 0; i < shape[0]; i++)
     {
-        std::cout << data[i] << ", ";
+        os << data[i] << ", ";
     }
-    std::cout << "]" << std::endl;
-    
-    std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl; 
-    std::cout << "Type: Vector" << std::endl;
+    os << "]" << std::endl;
+
+    os << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
+    os << "Type: Vector" << std::endl;
 }
 
 void Vector::print_addresses()
@@ -215,18 +215,18 @@ Matrix::~Matrix()
 {
     for (int i = 0; i < shape[0]; i++)
     {
-        delete [] data[i];
+        delete[] data[i];
     }
-    delete [] data;
+    delete[] data;
 }
 
-Matrix& Matrix::operator=(const Matrix  &M)
+Matrix &Matrix::operator=(const Matrix &M)
 {
     if (this == &M)
     {
         return *this;
     }
-    delete [] shape;
+    delete[] shape;
     shape = new int[2];
     shape[0] = M.shape[0];
     shape[1] = M.shape[1];
@@ -237,22 +237,22 @@ Matrix& Matrix::operator=(const Matrix  &M)
     return *this;
 }
 
-void Matrix::print() const
+void Matrix::print(std::ostream &os) const
 {
-    std::cout << std::setprecision(2);
+    os << std::setprecision(2);
 
     for (int i = 0; i < shape[0]; i++)
     {
-        std::cout << "[ ";
+        os << "[ ";
         for (int j = 0; j < shape[1]; j++)
         {
-            std::cout << data[i][j] << ", ";
+            os << data[i][j] << ", ";
         }
-        std::cout << " ]" << std::endl;
+        os << " ]" << std::endl;
     }
 
-    std::cout << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
-    std::cout << "Type: Matrix" << std::endl;
+    os << "Shape: (" << shape[0] << ", " << shape[1] << ')' << std::endl;
+    os << "Type: Matrix" << std::endl;
 }
 
 void Matrix::print_addresses()
