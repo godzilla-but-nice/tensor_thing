@@ -1,16 +1,29 @@
-CC = g++
-CFLAGS = -I
-OBJ = tensorFuncs.o test.o
-DEP = tensor.h myVector.h scalar.h matrix.h
+TEST = vector-test.cpp
+CC = g++-9
+OBJDIR = obj/
+SRCDIR = src/
+TESTDIR = tests/
+OBJ = ColumnVector.o vector-test.o
+DEP = ColumnVector.h
+DEPS = $(DEP:%.h=$(SRCDIR)%.h) tests/
+FULLTEST = $(TESTDIR)$(TEST)
+
+.PHONY = all clean
+
+all: test
 
 test : $(OBJ)
 	$(CC) -o test $(OBJ)
 
-test.o : test.cpp $(DEP)
-	$(CC) -c test.cpp
+vector-test.o : $(FULLTEST) $(DEPS)
+	@echo "building vector-test.o..."
+	$(CC) -c $(FULLTEST)
 
-tensorFuncs.o : tensorFuncs.cpp $(DEP)
-	$(CC) -c tensorFuncs.cpp
+ColumnVector.o : $(SRCDIR)ColumnVector.cpp $(DEPS)
+	@echo "building ColumnVector.o..."
+	$(CC) -c $(SRCDIR)ColumnVector.cpp 
 
 clean :
 	rm test $(OBJ)
+	rm -r obj
+	mkdir obj

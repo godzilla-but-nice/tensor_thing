@@ -1,30 +1,44 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
+#include <cmath>
+#include <vector>
 
 class ColumnVector
 {
 public:
     // CONSTRUCTORS
     ColumnVector();                    // default constructor
-    ColumnVector(int);                 // constructor for set shape
-    ColumnVector(int, const double *); // constructor for pointer to array and shape
-    ColumnVector(const ColumnVector &);      // copy
-    // DESTRUCTOR
-    ~ColumnVector(); // handle leaky memory
+    ColumnVector(size_t);                 // constructor for set shape
+    ColumnVector(size_t, std::vector<double>); // constructor for pointer to array and shape
+    ColumnVector(const ColumnVector &);// copy
+    
     // OPERATORS
     ColumnVector &operator=(const ColumnVector &);
-    ColumnVector &operator+(const ColumnVector &); // element-wise addition
+    bool operator==(const ColumnVector&);
+    ColumnVector operator+(const ColumnVector &); // element-wise addition
+    ColumnVector operator+(double);               // e-w scalar addition
+    ColumnVector operator*(const ColumnVector &); // element-wise multiplication
+    ColumnVector operator*(double);               // e-w scalar multiplication
+    ColumnVector operator-(const ColumnVector &); // element-wise subtraction
+    ColumnVector operator-(double);               // e-w scalar subtraction
+    ColumnVector operator/(const ColumnVector &); // element-wise division
+    ColumnVector operator/(double);               // e-w scalar division
+    
     // FUNCTIONS
     void print(std::ostream &os) const;
-    double *get_data() const;
-    void set_data(const double *);
+    std::vector<double> get_data() const;
+    void set_data(std::vector<double>);
+    int get_shape() const;
+
+    // MATH
+    double dot(const ColumnVector&);
+    double get_magnitude() const;
+    // double euc_dist(const ColumnVector&) const; // NOT IMPLEMENTED YET
 
     // testing
-    void print_addresses(); // print pointer addresses
+    void print_addresses();         // print pointer addresses
 private:
-    double *allocate();            // allocate memory for ColumnVector
-    void deep_copy(const double *); // fill values from pointer to 1d array
-    double *data;
-    int shape;
+    std::vector<double> data;
+    size_t shape;
 };
