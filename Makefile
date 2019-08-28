@@ -1,9 +1,9 @@
 TEST = vector-test.cpp
-CC = g++-9
+CXX ?= g++
 OBJDIR = obj/
 SRCDIR = src/
 TESTDIR = tests/
-OBJ = ColumnVector.o vector-test.o
+OBJ = $(OBJDIR)ColumnVector.o $(OBJDIR)vector-test.o
 DEP = ColumnVector.h
 DEPS = $(DEP:%.h=$(SRCDIR)%.h) tests/
 FULLTEST = $(TESTDIR)$(TEST)
@@ -13,17 +13,18 @@ FULLTEST = $(TESTDIR)$(TEST)
 all: test
 
 test : $(OBJ)
-	$(CC) -o test $(OBJ)
+	@echo "Creating executable..."
+	$(CXX) -o $(OBJDIR)test $(OBJ)
 
-vector-test.o : $(FULLTEST) $(DEPS)
+$(OBJDIR)vector-test.o : $(FULLTEST) $(DEPS)
 	@echo "building vector-test.o..."
-	$(CC) -c $(FULLTEST)
+	mkdir -p $(OBJDIR)
+	$(CXX) -c $(FULLTEST) -o $(OBJDIR)vector-test.o
 
-ColumnVector.o : $(SRCDIR)ColumnVector.cpp $(DEPS)
+$(OBJDIR)ColumnVector.o : $(SRCDIR)ColumnVector.cpp $(DEPS)
 	@echo "building ColumnVector.o..."
-	$(CC) -c $(SRCDIR)ColumnVector.cpp 
+	mkdir -p $(OBJDIR)
+	$(CXX) -c $(SRCDIR)ColumnVector.cpp -o $(OBJDIR)ColumnVector.o
 
 clean :
-	rm test $(OBJ)
 	rm -r obj
-	mkdir obj
