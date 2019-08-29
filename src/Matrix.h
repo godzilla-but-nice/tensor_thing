@@ -26,15 +26,16 @@ public:
 
     // OPERATORS
     Matrix &operator=(const Matrix &);
-    bool operator==(const Matrix &);
+    bool operator==(const Matrix &) const;
+    bool operator!=(const Matrix &) const;
     Matrix operator+(const Matrix &);           // element-wise addition (same shape)
     Matrix operator+(double);                   // element-wise scalar addition
     Matrix operator-(const Matrix &);           // element-wise subtraction (same shape)
     Matrix operator-(double);                   // element-wise scalar subtraction
-    Matrix operator*(double);                   // element-wise scalar multiplication
     Matrix operator*(const Matrix &);           // element-wise multiplaction (same shape)
-    Matrix operator/(double);                   // element-wise scalar division
+    Matrix operator*(double);                   // element-wise scalar multiplication
     Matrix operator/(const Matrix &);           // element-wise division (same size)
+    Matrix operator/(double);                   // element-wise scalar division
     
     // FUNCTIONS
     void print(std::ostream &os) const;

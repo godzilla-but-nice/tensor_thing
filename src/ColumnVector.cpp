@@ -27,9 +27,9 @@ ColumnVector::ColumnVector(size_t length)
     }
 }
 
-ColumnVector::ColumnVector(size_t length, std::vector<double> vec)
+ColumnVector::ColumnVector(std::vector<double> vec)
 {
-    shape = length;
+    shape = vec.size();
 
     for (int i = 0; i < shape; i++)
     {
@@ -60,7 +60,7 @@ ColumnVector &ColumnVector::operator=(const ColumnVector &V)
     return *this;
 }
 
-bool ColumnVector::operator==(const ColumnVector &V)
+bool ColumnVector::operator==(const ColumnVector &V) const
 {
     if (shape != V.shape) {return false;}
 
@@ -69,6 +69,12 @@ bool ColumnVector::operator==(const ColumnVector &V)
         if (data[i] != V.data[i]) {return false;}
     }
     return true;
+}
+
+bool ColumnVector::operator!=(const ColumnVector &V) const
+{
+    if (*this == V) {return false;}
+    else {return true;}
 }
 
 ColumnVector  ColumnVector::operator+(const ColumnVector &V)

@@ -10,12 +10,13 @@ public:
     // CONSTRUCTORS
     ColumnVector();                    // default constructor
     ColumnVector(size_t);                 // constructor for set shape
-    ColumnVector(size_t, std::vector<double>); // constructor for pointer to array and shape
+    ColumnVector(std::vector<double>); // constructor for pointer to array and shape
     ColumnVector(const ColumnVector &);// copy
     
     // OPERATORS
     ColumnVector &operator=(const ColumnVector &);
-    bool operator==(const ColumnVector&);
+    bool operator==(const ColumnVector&) const;
+    bool operator!=(const ColumnVector&) const;
     ColumnVector operator+(const ColumnVector &); // element-wise addition
     ColumnVector operator+(double);               // e-w scalar addition
     ColumnVector operator*(const ColumnVector &); // element-wise multiplication
