@@ -11,13 +11,13 @@ int main()
     {
         arr.push_back(1);
     }
-    ColumnVector v_ones(3, arr);
+    ColumnVector v_ones(arr);
     for (int i = 0; i < 3; i++)
     {
         arr[i] = i + 1;
     }
-    ColumnVector v1(3, arr);
-    ColumnVector v2(3, arr);
+    ColumnVector v1(arr);
+    ColumnVector v2(arr);
 
     std::cout << "Printing v1:" << std::endl;
     v1.print(std::cout);
@@ -28,7 +28,7 @@ int main()
     // more vectors for testing
     ColumnVector v_zeros(3);
     for (int i = 0; i < 3; i++) {arr[i] = 2.0;}
-    ColumnVector v_twos(3, arr);
+    ColumnVector v_twos(arr);
     ColumnVector v_res;
     
     std::cout << "All vectors initialized!" << std::endl;
