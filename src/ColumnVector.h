@@ -17,14 +17,14 @@ public:
     ColumnVector &operator=(const ColumnVector &);
     bool operator==(const ColumnVector&) const;
     bool operator!=(const ColumnVector&) const;
-    ColumnVector operator+(const ColumnVector &); // element-wise addition
-    ColumnVector operator+(double);               // e-w scalar addition
-    ColumnVector operator*(const ColumnVector &); // element-wise multiplication
-    ColumnVector operator*(double);               // e-w scalar multiplication
-    ColumnVector operator-(const ColumnVector &); // element-wise subtraction
-    ColumnVector operator-(double);               // e-w scalar subtraction
-    ColumnVector operator/(const ColumnVector &); // element-wise division
-    ColumnVector operator/(double);               // e-w scalar division
+    ColumnVector operator+(const ColumnVector &) const; // element-wise addition
+    ColumnVector operator+(double) const;               // e-w scalar addition
+    ColumnVector operator*(const ColumnVector &) const; // element-wise multiplication
+    ColumnVector operator*(double) const;               // e-w scalar multiplication
+    ColumnVector operator-(const ColumnVector &) const; // element-wise subtraction
+    ColumnVector operator-(double) const;               // e-w scalar subtraction
+    ColumnVector operator/(const ColumnVector &) const; // element-wise division
+    ColumnVector operator/(double) const;               // e-w scalar division
     
     // FUNCTIONS
     void print(std::ostream &os) const;

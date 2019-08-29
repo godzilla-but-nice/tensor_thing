@@ -88,7 +88,7 @@ bool Matrix::operator!=(const Matrix&M) const
     else {return true;}
 }
 
-Matrix Matrix::operator+(const Matrix &M)
+Matrix Matrix::operator+(const Matrix &M) const
 {
     if (this->shape != M.shape)
     {
@@ -96,21 +96,25 @@ Matrix Matrix::operator+(const Matrix &M)
         exit(0);
     }
 
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] + M.data[i];
+        ret.data[i] = data[i] + M.data[i];
     }
+    return ret;
 }
 
-Matrix Matrix::operator+(double d)
+Matrix Matrix::operator+(double d) const
 {
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] + d;
+        ret.data[i] = data[i] + d;
     }
+    return ret;
 }
 
-Matrix Matrix::operator-(const Matrix &M)
+Matrix Matrix::operator-(const Matrix &M) const
 {
     if (this->shape != M.shape)
     {
@@ -118,21 +122,25 @@ Matrix Matrix::operator-(const Matrix &M)
         exit(0);
     }
 
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] - M.data[i];
+        ret.data[1] = data[i] - M.data[i];
     }
+    return ret;
 }
 
-Matrix Matrix::operator-(double d)
+Matrix Matrix::operator-(double d) const
 {
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] - d;
+        ret.data[i] = data[i] - d;
     }
+    return ret;
 }
 
-Matrix Matrix::operator*(const Matrix &M)
+Matrix Matrix::operator*(const Matrix &M) const
 {
     if (this->shape != M.shape)
     {
@@ -140,21 +148,24 @@ Matrix Matrix::operator*(const Matrix &M)
         exit(0);
     }
 
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] * M.data[i];
+        ret.data[i] = data[i] * M.data[i];
     }
+    return ret;
 }
 
-Matrix Matrix::operator*(double d)
-{
+Matrix Matrix::operator*(double d) const
+{   Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] * d;
+        ret.data[i] = data[i] * d;
     }
+    return ret;
 }
 
-Matrix Matrix::operator/(const Matrix &M)
+Matrix Matrix::operator/(const Matrix &M) const
 {
     if (this->shape != M.shape)
     {
@@ -162,17 +173,94 @@ Matrix Matrix::operator/(const Matrix &M)
         exit(0);
     }
 
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] / M.data[i];
+        ret.data[i] = data[i] / M.data[i];
     }
+    return ret;
 }
 
-Matrix Matrix::operator/(double d)
+Matrix Matrix::operator/(double d) const
 {
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
-        data[i] = data[i] / d;
+        ret.data[i] = data[i] / d;
     }
+    return ret;
+}
+
+/* ------------------
+|     FUNCTIONS     |
+-------------------*/
+
+void Matrix::print(std::ostream &os) const
+{
+    os << std::setprecision(2) << "[ ";
+
+    for (int i = 0; i < shape.first; i++) // Loop through rows
+    {
+        if (i > 0) {os << "  ";}
+        for (int j = 0; j < shape.second; j++) // Loop through cols
+        {
+            std::vector<double> vec = data[j].get_data();
+            os << vec[i] << ", ";
+        }
+        os << std::endl;
+    }
+    os << "]" << std::endl;
+
+    os << "Shape: (" << shape.first << " , " << shape.first << ")" << std::endl;
+    os << "Type: Vector" << std::endl;
+}
+
+std::vector<ColumnVector> Matrix::get_columns() const
+{
+    std::vector<ColumnVector> vec;
+    for (int i = 0; i < shape.second; i++)
+    {
+        vec.push_back(data[i]);
+    }
+    return vec;
+}
+ColumnVector Matrix::get_column(int i) const
+{
+    return data[i];
+}
+
+void Matrix::set_columns(std::vector<std::vector<double>>)
+{
+    // TODO: implement
+}
+
+void Matrix::set_columns(std::vector<ColumnVector>)
+{
+    // TODO: implement
+}
+
+void Matrix::push_column_back(std::vector<double>)
+{
+    // TODO: implement
+}
+
+void Matrix::push_column_back(ColumnVector)
+{
+    // TODO: implement
+}
+
+void Matrix::push_column_front(std::vector<double>)
+{
+    // TODO: implement
+}
+
+void Matrix::push_column_front(ColumnVector)
+{
+    // TODO: implement
+}
+
+std::pair<size_t, size_t> Matrix::get_shape() const
+{
+    // TODO: implement
 }
 

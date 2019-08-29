@@ -28,20 +28,25 @@ public:
     Matrix &operator=(const Matrix &);
     bool operator==(const Matrix &) const;
     bool operator!=(const Matrix &) const;
-    Matrix operator+(const Matrix &);           // element-wise addition (same shape)
-    Matrix operator+(double);                   // element-wise scalar addition
-    Matrix operator-(const Matrix &);           // element-wise subtraction (same shape)
-    Matrix operator-(double);                   // element-wise scalar subtraction
-    Matrix operator*(const Matrix &);           // element-wise multiplaction (same shape)
-    Matrix operator*(double);                   // element-wise scalar multiplication
-    Matrix operator/(const Matrix &);           // element-wise division (same size)
-    Matrix operator/(double);                   // element-wise scalar division
+    Matrix operator+(const Matrix &) const;       // element-wise addition (same shape)
+    Matrix operator+(double) const;               // element-wise scalar addition
+    Matrix operator-(const Matrix &) const;       // element-wise subtraction (same shape)
+    Matrix operator-(double) const;               // element-wise scalar subtraction
+    Matrix operator*(const Matrix &) const;       // element-wise multiplaction (same shape)
+    Matrix operator*(double) const;               // element-wise scalar multiplication
+    Matrix operator/(const Matrix &) const;       // element-wise division (same size)
+    Matrix operator/(double) const;               // element-wise scalar division
     
     // FUNCTIONS
     void print(std::ostream &os) const;
     std::vector<ColumnVector> get_columns() const;
+    ColumnVector get_column(int) const;
     void set_columns(std::vector<std::vector<double>>);
     void set_columns(std::vector<ColumnVector>);
+    void push_column_back(std::vector<double>);
+    void push_column_back(ColumnVector);
+    void push_column_front(std::vector<double>);
+    void push_column_front(ColumnVector);
     std::pair<size_t, size_t> get_shape() const;
 
     // MATH
