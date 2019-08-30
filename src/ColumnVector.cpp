@@ -62,22 +62,34 @@ ColumnVector &ColumnVector::operator=(const ColumnVector &V)
 
 bool ColumnVector::operator==(const ColumnVector &V) const
 {
-    if (shape != V.shape) {return false;}
+    if (shape != V.shape)
+    {
+        return false;
+    }
 
     for (int i = 0; i < shape; i++)
     {
-        if (data[i] != V.data[i]) {return false;}
+        if (data[i] != V.data[i])
+        {
+            return false;
+        }
     }
     return true;
 }
 
 bool ColumnVector::operator!=(const ColumnVector &V) const
 {
-    if (*this == V) {return false;}
-    else {return true;}
+    if (*this == V)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
-ColumnVector  ColumnVector::operator+(const ColumnVector &V) const
+ColumnVector ColumnVector::operator+(const ColumnVector &V) const
 {
     if (V.shape != shape)
     {
@@ -96,7 +108,7 @@ ColumnVector  ColumnVector::operator+(const ColumnVector &V) const
     return ret_vec;
 }
 
-ColumnVector  ColumnVector::operator+(double d) const
+ColumnVector ColumnVector::operator+(double d) const
 {
     ColumnVector ret_vec(shape);
     std::vector<double> new_v;
@@ -209,6 +221,12 @@ ColumnVector ColumnVector::operator/(double d) const
 |      DISPLAY      |
 -------------------*/
 
+void ColumnVector::push_back(double D)
+{
+    shape++;
+    data.push_back(D);
+}
+
 void ColumnVector::print(std::ostream &os) const
 {
     os << std::setprecision(2) << "[ ";
@@ -216,7 +234,10 @@ void ColumnVector::print(std::ostream &os) const
     for (int i = 0; i < shape; i++)
     {
         os << data[i];
-        if (i < shape - 1) {os << ",";}
+        if (i < shape - 1)
+        {
+            os << ",";
+        }
     }
     os << " ]" << std::endl;
 
@@ -256,7 +277,7 @@ double ColumnVector::dot(const ColumnVector &V)
 double ColumnVector::get_magnitude() const
 {
     double sum;
-    for (int i = 0; i < shape; i ++)
+    for (int i = 0; i < shape; i++)
     {
         sum += std::pow(data[i], 2);
     }
