@@ -28,13 +28,13 @@ Matrix::Matrix(size_t row, size_t col)
 Matrix::Matrix(std::pair<size_t, size_t> shape)
 {
     this->shape = shape;
-    for (int i = 0; i < shape.second; i ++)
+    for (int i = 0; i < shape.second; i++)
     {
         data.push_back(ColumnVector());
     }
 }
 
-Matrix::Matrix(std::vector<std::vector<double> > vec)
+Matrix::Matrix(std::vector<std::vector<double>> vec)
 {
     size_t rows = vec[0].size();
     size_t cols = vec.size();
@@ -64,7 +64,10 @@ Matrix::Matrix(const Matrix &mat)
 
 Matrix &Matrix::operator=(const Matrix &M)
 {
-    if (this == &M) {return *this;}
+    if (this == &M)
+    {
+        return *this;
+    }
 
     shape = M.shape;
     data = M.data;
@@ -73,19 +76,31 @@ Matrix &Matrix::operator=(const Matrix &M)
 
 bool Matrix::operator==(const Matrix &M) const
 {
-    if (shape != M.shape) {return false;}
-    
+    if (shape != M.shape)
+    {
+        return false;
+    }
+
     for (int i = 0; i < shape.second; i++)
     {
-        if (data[i] != M.data[i]) {return false;}
+        if (data[i] != M.data[i])
+        {
+            return false;
+        }
     }
     return true;
 }
 
-bool Matrix::operator!=(const Matrix&M) const
+bool Matrix::operator!=(const Matrix &M) const
 {
-    if (*this == M) {return false;}
-    else {return true;}
+    if (*this == M)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 Matrix Matrix::operator+(const Matrix &M) const
@@ -157,7 +172,8 @@ Matrix Matrix::operator*(const Matrix &M) const
 }
 
 Matrix Matrix::operator*(double d) const
-{   Matrix ret(shape);
+{
+    Matrix ret(shape);
     for (int i = 0; i < shape.second; i++)
     {
         ret.data[i] = data[i] * d;
@@ -201,15 +217,27 @@ void Matrix::print(std::ostream &os) const
 
     for (int i = 0; i < shape.first; i++) // Loop through rows
     {
-        if (i > 0) {os << "  ";}
+        if (i > 0)
+        {
+            os << "  ";
+        }
         for (int j = 0; j < shape.second; j++) // Loop through cols
         {
             std::vector<double> vec = data[j].get_data();
             os << vec[i];
-            if (j < shape.second - 1) { os << ", "; }
+            if (j < shape.second - 1)
+            {
+                os << ", ";
+            }
         }
-        if (i < shape.first - 1) { os << std::endl; }
-        else { os << " ]" << std::endl; }
+        if (i < shape.first - 1)
+        {
+            os << std::endl;
+        }
+        else
+        {
+            os << " ]" << std::endl;
+        }
     }
 
     os << "Shape: (" << shape.first << " , " << shape.first << ")" << std::endl;
@@ -230,7 +258,7 @@ ColumnVector Matrix::get_column(int i) const
     return data[i];
 }
 
-void Matrix::set_columns(std::vector<std::vector<double> > vec)
+void Matrix::set_columns(std::vector<std::vector<double>> vec)
 {
     *this = Matrix();
     shape.first = vec[0].size();
@@ -278,15 +306,16 @@ ColumnVector Matrix::dot(const ColumnVector vec) const
         exit(0);
     }
 
-    ColumnVector ret_vec = ColumnVector();
-    for (int i = 0; i < shape.first; i++) // loop through shape of ret vec
+    ColumnVector ret_vec = ColumnVector(0);
+    for (int i = 0; i < shape.second; i++) // loop through shape of ret vec
     {
-        double val = 0;
-        for (int j = 0; j < shape.second; j++) // loop through cols of matrix
+        ColumnVector row = ColumnVector(0);
+        for (int j = 0; j < shape.first; j++) // loop through cols of matrix
         {
-            val += data[j].data[i] *  vec.data[i];
+            row.push_back(data[j].data[i]);
         }
-        ret_vec.data.push_back(val);
+
+        ret_vec.push_back(row.dot(vec));
     }
 
     return ret_vec;
@@ -300,21 +329,23 @@ Matrix Matrix::mult(const Matrix mat) const
         exit(0);
     }
 
-    Matrix ret_mat = Matrix();
-    ret_mat.shape.first = shape.first;
-    ret_mat.shape.second = mat.shape.second;
+    int rows = shape.first;
+    int cols = mat.shape.second;
 
-    for (int i = 0; i < ret_mat.shape.second; i++) // loop through cols
+    Matrix ret_mat = Matrix(0, 0);
+
+    // AB = C
+    ColumnVector ret_vec = ColumnVector(0);
+    for (int i = 0; i < shape.second; i++) // loop through shape of ret vec
     {
-        for (int j = 0; j < ret_mat.shape.first; j++)
-        { 
-            ColumnVector row = ColumnVector();
-            for (int z = 0; z < shape.first; z++)
-            {
-                row.data.push_back(data[z].data[i]);
-            }
-            ret_mat.data[i].data[j] = row.dot(mat.data[i]);
-        }
+        ColumnVector row = ColumnVector(0);
+        for (int j = 0; j < shape.first; j++) // loop through cols of matrix
+        {
+            row.push_back(data[j].data[i]);
+        } // after loop we have a row of A
+
+        //TODO: I think i'm thinking about this poorly.
     }
 
+    return ret_mat;
 }
