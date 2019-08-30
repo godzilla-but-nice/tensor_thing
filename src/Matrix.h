@@ -3,7 +3,7 @@
 #include <cstring>
 #include <cmath>
 #include <vector>
-#include "ColumnVector.h"
+#include "../src/ColumnVector.h"
 
 /*
     Class for manipulating and doing math with matrices
@@ -16,6 +16,9 @@
 class Matrix
 {
 public:
+    // FRIENDS - necessary for performance...
+    friend class ColumnVector;
+
     // CONSTRUCTORS
     Matrix();                                   // default constructor
     Matrix(size_t, size_t);                     // constructor for set shape
@@ -45,13 +48,11 @@ public:
     void set_columns(std::vector<ColumnVector>);
     void push_column_back(std::vector<double>);
     void push_column_back(ColumnVector);
-    void push_column_front(std::vector<double>);
-    void push_column_front(ColumnVector);
     std::pair<size_t, size_t> get_shape() const;
 
     // MATH
     ColumnVector dot(const ColumnVector) const;
-    Matrix dot(const Matrix) const;
+    Matrix mult(const Matrix) const;
     // double determinant() const;  // I imagine this will be hard to do efficiently...
 
 private:

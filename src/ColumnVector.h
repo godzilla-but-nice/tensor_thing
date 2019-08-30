@@ -7,6 +7,9 @@
 class ColumnVector
 {
 public:
+    // FRIENDS - necessary for performance...
+    friend class Matrix;
+
     // CONSTRUCTORS
     ColumnVector();                    // default constructor
     ColumnVector(size_t);                 // constructor for set shape
