@@ -27,9 +27,9 @@ ColumnVector::ColumnVector(size_t length)
     }
 }
 
-ColumnVector::ColumnVector(size_t length, std::vector<double> vec)
+ColumnVector::ColumnVector(std::vector<double> vec)
 {
-    shape = length;
+    shape = vec.size();
 
     for (int i = 0; i < shape; i++)
     {
@@ -60,7 +60,7 @@ ColumnVector &ColumnVector::operator=(const ColumnVector &V)
     return *this;
 }
 
-bool ColumnVector::operator==(const ColumnVector &V)
+bool ColumnVector::operator==(const ColumnVector &V) const
 {
     if (shape != V.shape) {return false;}
 
@@ -71,7 +71,13 @@ bool ColumnVector::operator==(const ColumnVector &V)
     return true;
 }
 
-ColumnVector  ColumnVector::operator+(const ColumnVector &V)
+bool ColumnVector::operator!=(const ColumnVector &V) const
+{
+    if (*this == V) {return false;}
+    else {return true;}
+}
+
+ColumnVector  ColumnVector::operator+(const ColumnVector &V) const
 {
     if (V.shape != shape)
     {
@@ -90,7 +96,7 @@ ColumnVector  ColumnVector::operator+(const ColumnVector &V)
     return ret_vec;
 }
 
-ColumnVector  ColumnVector::operator+(double d)
+ColumnVector  ColumnVector::operator+(double d) const
 {
     ColumnVector ret_vec(shape);
     std::vector<double> new_v;
@@ -103,7 +109,7 @@ ColumnVector  ColumnVector::operator+(double d)
     return ret_vec;
 }
 
-ColumnVector ColumnVector::operator*(const ColumnVector &V)
+ColumnVector ColumnVector::operator*(const ColumnVector &V) const
 {
     if (V.shape != shape)
     {
@@ -122,7 +128,7 @@ ColumnVector ColumnVector::operator*(const ColumnVector &V)
     return ret_vec;
 }
 
-ColumnVector ColumnVector::operator*(double d)
+ColumnVector ColumnVector::operator*(double d) const
 {
     ColumnVector ret_vec(shape);
     std::vector<double> new_v;
@@ -135,7 +141,7 @@ ColumnVector ColumnVector::operator*(double d)
     return ret_vec;
 }
 
-ColumnVector ColumnVector::operator-(const ColumnVector &V)
+ColumnVector ColumnVector::operator-(const ColumnVector &V) const
 {
     if (V.shape != shape)
     {
@@ -154,7 +160,7 @@ ColumnVector ColumnVector::operator-(const ColumnVector &V)
     return ret_vec;
 }
 
-ColumnVector ColumnVector::operator-(double d)
+ColumnVector ColumnVector::operator-(double d) const
 {
     ColumnVector ret_vec(shape);
     std::vector<double> new_v;
@@ -167,7 +173,7 @@ ColumnVector ColumnVector::operator-(double d)
     return ret_vec;
 }
 
-ColumnVector ColumnVector::operator/(const ColumnVector &V)
+ColumnVector ColumnVector::operator/(const ColumnVector &V) const
 {
     if (V.shape != shape)
     {
@@ -186,7 +192,7 @@ ColumnVector ColumnVector::operator/(const ColumnVector &V)
     return ret_vec;
 }
 
-ColumnVector ColumnVector::operator/(double d)
+ColumnVector ColumnVector::operator/(double d) const
 {
     ColumnVector ret_vec(shape);
     std::vector<double> new_v;
@@ -209,9 +215,10 @@ void ColumnVector::print(std::ostream &os) const
 
     for (int i = 0; i < shape; i++)
     {
-        os << data[i] << ", ";
+        os << data[i];
+        if (i < shape - 1) {os << ",";}
     }
-    os << "]" << std::endl;
+    os << " ]" << std::endl;
 
     os << "Shape: (" << shape << ')' << std::endl;
     os << "Type: Vector" << std::endl;
