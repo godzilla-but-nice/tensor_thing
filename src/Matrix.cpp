@@ -34,7 +34,7 @@ Matrix::Matrix(std::pair<size_t, size_t> shape)
     }
 }
 
-Matrix::Matrix(std::vector<std::vector<double>> vec)
+Matrix::Matrix(std::vector<std::vector<double> > vec)
 {
     size_t rows = vec[0].size();
     size_t cols = vec.size();
@@ -230,7 +230,7 @@ ColumnVector Matrix::get_column(int i) const
     return data[i];
 }
 
-void Matrix::set_columns(std::vector<std::vector<double>> vec)
+void Matrix::set_columns(std::vector<std::vector<double> > vec)
 {
     *this = Matrix();
     shape.first = vec[0].size();

@@ -1,8 +1,11 @@
+#ifndef STD
+#define STD
 #include <iostream>
 #include <iomanip>
 #include <cstring>
 #include <cmath>
 #include <vector>
+#endif
 
 class ColumnVector
 {

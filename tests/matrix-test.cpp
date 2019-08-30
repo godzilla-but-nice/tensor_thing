@@ -3,10 +3,10 @@
 #include "../src/Matrix.h"
 #endif
 
-// #ifndef H_VECTOR
-// #define H_VECTOR
-// #include "../src/ColumnVector.h"
-// #endif
+#ifndef H_VECTOR
+#define H_VECTOR
+#include "../src/ColumnVector.h"
+#endif
 
 int main()
 {

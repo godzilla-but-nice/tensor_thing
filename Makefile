@@ -1,30 +1,50 @@
-TEST = vector-test.cpp
+TEST = vector-test.cpp matrix-test.cpp
 CXX ?= g++
 OBJDIR = obj/
 SRCDIR = src/
 TESTDIR = tests/
-OBJ = $(OBJDIR)ColumnVector.o $(OBJDIR)vector-test.o
-DEP = ColumnVector.h
+VECOBJ = ColumnVector.o vector-test.o
+MATOBJ = ColumnVector.o Matrix.o matrix-test.o
+VECOBJS = $(VECOBJ:%.o=$(OBJDIR)%.o)
+MATOBJS = $(MATOBJ:%.o=$(OBJDIR)%.o)
+DEP = ColumnVector.h Matrix.h
 DEPS = $(DEP:%.h=$(SRCDIR)%.h) tests/
-FULLTEST = $(TESTDIR)$(TEST)
+FULLTEST = $(join $(TESTDIR), $(TEST))
 
-.PHONY = all clean
+ifdef PHYSICELL_CPP 
+	CXX := $(PHYSICELL_CPP)
+endif
 
-all: test
+.PHONY = clean
 
-test : $(OBJ)
+all: VectorTest MatrixTest
+
+VectorTest : $(VECOBJS)
 	@echo "Creating executable..."
-	$(CXX) -o $(OBJDIR)test $(OBJ)
+	$(CXX) -o VectorTest $(VECOBJS)
 
-$(OBJDIR)vector-test.o : $(FULLTEST) $(DEPS)
+MatrixTest : $(MATOBJS)
+	$(CXX) -o MatrixTest $(MATOBJS)
+
+$(OBJDIR)vector-test.o : $(TESTDIR)vector-test.cpp $(DEPS)
 	@echo "building vector-test.o..."
 	mkdir -p $(OBJDIR)
-	$(CXX) -c $(FULLTEST) -o $(OBJDIR)vector-test.o
+	$(CXX) -c $(TESTDIR)vector-test.cpp -o $(OBJDIR)vector-test.o
+
+$(OBJDIR)matrix-test.o : $(TESTDIR)matrix-test.cpp $(DEPS)
+	$(CXX) -c $(TESTDIR)matrix-test.cpp -o $(OBJDIR)matrix-test.o
 
 $(OBJDIR)ColumnVector.o : $(SRCDIR)ColumnVector.cpp $(DEPS)
 	@echo "building ColumnVector.o..."
 	mkdir -p $(OBJDIR)
 	$(CXX) -c $(SRCDIR)ColumnVector.cpp -o $(OBJDIR)ColumnVector.o
 
+$(OBJDIR)Matrix.o : $(SRCDIR)Matrix.cpp $(DEPS)
+	@echo "building Matrix.o..."
+	mkdir -p $(OBJDIR)
+	$(CXX) -c $(SRCDIR)Matrix.cpp -o $(OBJDIR)Matrix.o
+
 clean :
-	rm -r obj
+	rm -fr obj
+	rm -f VectorTest
+	rm -f MatrixTest

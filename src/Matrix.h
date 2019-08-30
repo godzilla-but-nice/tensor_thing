@@ -1,9 +1,16 @@
+#ifndef STD
+#define STD
 #include <iostream>
 #include <iomanip>
 #include <cstring>
 #include <cmath>
 #include <vector>
+#endif
+
+#ifndef H_VECTOR
+#define H_VECTOR
 #include "../src/ColumnVector.h"
+#endif
 
 /*
     Class for manipulating and doing math with matrices
@@ -23,7 +30,7 @@ public:
     Matrix();                                   // default constructor
     Matrix(size_t, size_t);                     // constructor for set shape
     Matrix(std::pair<size_t, size_t>);          // constructor for set shape (with pair object)
-    Matrix(std::vector<std::vector<double>>);   // constructor for 2d std::vector
+    Matrix(std::vector<std::vector<double> >);   // constructor for 2d std::vector
     Matrix(std::vector<ColumnVector>);          // constructor for std::vector of ColumnVectors
     Matrix(const Matrix &);                     // copy
 
@@ -44,7 +51,7 @@ public:
     void print(std::ostream &os) const;
     std::vector<ColumnVector> get_columns() const;
     ColumnVector get_column(int) const;
-    void set_columns(std::vector<std::vector<double>>);
+    void set_columns(std::vector<std::vector<double> >);
     void set_columns(std::vector<ColumnVector>);
     void push_column_back(std::vector<double>);
     void push_column_back(ColumnVector);
