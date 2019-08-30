@@ -21,17 +21,25 @@ int main()
     vec.push_back(col2);
     vec.push_back(col3);
 
-    std::cout << "Making matrix from vec..." << std::endl;
+    std::cout << std::endl << "Making matrix from vec..." << std::endl;
     Matrix mat = Matrix(vec);
     mat.print(std::cout);
 
-    std::cout << "copying matrix..." << std::endl;
+    std::cout << std::endl << "copying matrix..." << std::endl;
     Matrix mat2 = Matrix(mat);
     mat2.print(std::cout);
 
-    std::cout << "matrix.mult..." << std::endl;
-    Matrix mat_dot_result = mat.mult(mat2);
+    (mat + mat2).print(std::cout);
+    (mat - mat2).print(std::cout);
+    (mat * mat2).print(std::cout);
 
-    std::cout << "printing result..." << std::endl;
-    mat_dot_result.print(std::cout);
+    std::cout << std::endl << "doing dot product..." << std::endl;
+    ColumnVector dot_result = mat.dot(col1);
+    dot_result.print(std::cout);
+
+    std::cout << std::endl << "matrix.mult..." << std::endl;
+    Matrix mult_result = mat.mult(mat2);
+
+    std::cout << std::endl << "printing result..." << std::endl;
+    mult_result.print(std::cout);
 }
